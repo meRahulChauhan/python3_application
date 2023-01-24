@@ -40,7 +40,7 @@ def rgb_to_gray():
          fs.close()
 
 def validate_img():
-   path=input("Enter: ")
+   path=input("Enter filename: ")
    img_list=set()
    if os.path.exists(path)==False:
        if len(path)>0:
@@ -65,22 +65,7 @@ def validate_img():
       fs=open("img_list.txt","a")
       for x in img_list:
          fs.write(x+"\n")
-def validate_bulk_img():
-   path=disk_file()
-   img_list=set()
-   if os.path.exists(path):
-      if path.endswith(".jpg",-4,len(path)):
-         img_list.add(path)
-      elif path.endswith(".jpeg",-5,len(path)):
-         img_list.add(path)
-      elif path.endswith(".png",-4,len(path)):
-         img_list.add(path)
-      else :
-         print("Notice: '"+path+"'"+" probably not a image file")
-         
-      fs=open("img_list.txt","a")
-      for x in img_list:
-         fs.write(x+"\n")         
+        
 def diskfile():
    img_list=set()
    path=os.getcwd()
@@ -133,6 +118,9 @@ def sanitize_words():
       img_to_txt()
    fs=open("paragraph.txt","r")
    filename=input("Enter filename to store words: ")
+   if len(filename)<=0:
+      print("Filename couldn't be null")
+      sanitize_words()
    fs1=open(filename,"w")
    sanitize_wordset=set()
    with open("paragraph.txt","r") as datafile:
@@ -156,18 +144,38 @@ def remover():
    #if os.path.exists("img_black/*.*"):
    #   os.remove("img_black/*.*")
    if os.path.exists("paragraph.txt"):
-      os.remove("paragraph.txt")
-  
+      while True:
+         print("Save Extract text 'y/n' -")
+         opt=input().lower().strip()
+         if opt=='y':
+            new_file=input("Enter filename: ")
+            source_file="paragraph.txt"
+            if len(new_file)>0:
+               shutil.copyfile(source_file ,new_file)
+               print("extracted data saved")
+               os.remove("paragraph.txt")
+               break
+            else:
+               print("filename couldn't be null")
+               continue
+         elif opt=='n':
+            os.remove("paragraph.txt")
+            print("extracted file removed")
+            break
+         else :
+            print("Invalid Entry")
+
 def read_text():
    print("Enter filename to read ")     
    filename=input("Filename: ") 
    cmd="cat "+filename
    subprocess.run([cmd,"-l"],shell=True)
+   
 def menu():
    while True:
       print("."*60)
       print("1. Enter file \n2. Convert Image RGB to Grayscale\n3. Extract text from images\n4. Save exracted word to file\n5. Read from textfile\n6. Bulk file\nx. Exit Application  ")
-      opt=input("\tYour choice: ").lower()
+      opt=input("\tYour choice: ").lower().strip()
       print("."*60)
       if opt=='1':
          validate_img()
@@ -187,5 +195,5 @@ def menu():
          time.sleep(.5)
          break        
       else :
-         print("Invalid Entry: ")       
+         print("Invalid Entry: ") 
 menu()
