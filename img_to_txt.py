@@ -83,7 +83,7 @@ def validate_bulk_img():
          fs.write(x+"\n")         
 def diskfile():
    img_list=set()
-   path=input("Directory name: ")
+   path=os.getcwd()
    if os.path.exists(path)==False:
       print("path not exists")
       menu()
@@ -92,7 +92,7 @@ def diskfile():
       menu() 
    if os.path.isdir(path):
       for fs in os.listdir(path):
-         childpath=os.path.join(path,fs)
+         childpath=os.path.join(fs)
          if childpath.endswith(".jpg",-4,len(childpath)):
             img_list.add(childpath)
          elif childpath.endswith(".jpeg",-5,len(childpath)):
@@ -102,9 +102,9 @@ def diskfile():
          else :
             print("Notice: '"+childpath+"'"+" probably not a image file")
          
-         fs=open("img_list.txt","a")
-         for x in img_list:
-            fs.write(x+"\n") 
+      fs=open("img_list.txt","a")
+      for x in img_list:
+         fs.write(x+"\n") 
                      
 
     
@@ -180,6 +180,7 @@ def menu():
       elif opt=='5':
          read_text()   
       elif opt=='6':
+         print("place this script in dir , where you want to extract data ")
          diskfile()
       elif opt=='x':
          print("Exiting application")   
