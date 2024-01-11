@@ -120,11 +120,18 @@ class userRegistration(makeConnection):
 		while(self.validateEmail(self.email)):
 			if self.checkUserIdAvailibility(self.email):
 				self.password=input("password: ")
+				print("password stored in db,",self.result)
+				print("password entered by user",self.password)
+				print("type of data stored in db",type(self.result))
+				print("type of password entered by user ,",type(self.password))
 				if self.password==self.result:
 					print|("login success")
 				else: 
 					print("password doesn't match ")	
 					return False
+			else:
+				print("\t",self.email," is not registered")
+				return False		
 
 
 	def validateAlpha(self,text,minLength=2,maxLength=32):
@@ -198,7 +205,7 @@ class userRegistration(makeConnection):
 		#print(query)
 		self.cursor.execute(query)
 		self.result=self.cursor.fetchone()
-		print(type(self.result))	
+		#print(type(self.result))	
 		#print(self.cursor.rowcount)
 		if self.cursor.rowcount>0:
 			print(email,"available")
@@ -245,12 +252,13 @@ class userRegistration(makeConnection):
 newObj=userRegistration()
 def menu():
 	while(True):		
+		optList=['1','2','3']
 		print("1.LogIn \n2.Create Account\n3.Reset Password")
-		opt=int(input("choice: "))
-		if opt==1:
+		opt=input("choice: ")
+		if opt=='1':
 			newObj.logIn()
-		if opt==2:
+		if opt=='2':
 			newObj.createUser()
-		else:
+		if opt not in optList:
 			print("invalid choice")	
 menu()	
